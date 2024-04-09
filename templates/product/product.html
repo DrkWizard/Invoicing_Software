@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>My Products</h2>
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search by name...">
+    </div>
+    <div class="action-buttons">
+        <div class="add-product-btn">
+            <button class="new-product-button">New Product</button>
+        </div>
+    </div>
+    
+
+    <div class="product-grid">
+        <div class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <h3 class="product-name">Product A</h3>
+                </div>
+                <div class="flip-card-back">
+                    <p>Description: Lorem ipsum dolor sit amet.</p>
+                    <div class="product-actions">
+                        <i class="fas fa-edit"></i>
+                        <i class="fas fa-trash-alt"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Other product cards -->
+    </div>
+    <div class="pagination">
+        <button>&laquo; Prev</button>
+        <button>1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>4</button>
+        <button>5</button>
+        <button>Next &raquo;</button>
+    </div>
+</div>
+
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+    .container {
+        max-width: 2000px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+    }
+    .flip-card {
+        background-color: transparent;
+        width: 200px;
+        height: 200px;
+        perspective: 1000px;
+    }
+    .flip-card-inner {
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.5s;
+        transform-style: preserve-3d;
+    }
+    .flip-card:hover .flip-card-inner {
+        transform: rotateY(180deg);
+    }
+    .flip-card-front,
+    .flip-card-back {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        backface-visibility: hidden;
+    }
+    .flip-card-front {
+        background-color: #fff;
+        color: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .flip-card-back {
+        background-color: #f9f9f9;
+        color: #000;
+        transform: rotateY(180deg);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .product-name {
+        font-weight: bold;
+        font-size: 20px;
+    }
+    .product-actions {
+        margin-top: 10px;
+    }
+    .product-actions i {
+        margin: 0 5px;
+        color: #888;
+        cursor: pointer;
+    }
+    .product-actions i:hover {
+        color: #000;
+    }
+    .pagination {
+        margin-top: 20px;
+        text-align: center;
+    }
+    .pagination button {
+        margin: 0 5px;
+        padding: 5px 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .pagination button:hover {
+        background-color: #0056b3;
+    }
+
+    .action-buttons {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 10px;
+    }
+
+    .add-product-btn {
+        margin-left: 10px;
+    }
+    .add-product-btn button.new-product-button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .add-product-btn button.new-product-button:hover {
+        background-color: #0056b3;
+    }
+
+    .search-bar {
+        margin-bottom: 20px;
+    }
+
+    .search-bar input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        font-size: 16px;
+    }
+</style>
+{% endblock %}
