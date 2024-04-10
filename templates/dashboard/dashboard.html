@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Dashboard</h2>
+    <div class="summary-cards">
+        <div class="summary-card">
+            <h3>Total Revenue</h3>
+            <p>₹10,000</p>
+        </div>
+        <div class="summary-card">
+            <h3>Total Customers</h3>
+            <p>500</p>
+        </div>
+        <div class="summary-card">
+            <h3>Total Orders</h3>
+            <p>1000</p>
+        </div>
+    </div>
+
+    <div class="charts">
+        <div class="chart">
+            <!-- Insert chart here -->
+        </div>
+        <div class="chart">
+            <!-- Insert chart here -->
+        </div>
+    </div>
+</div>
+
+<style>
+    .container {
+        max-width: 2000px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .summary-cards {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+    .summary-card {
+        flex: 1;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+    .summary-card h3 {
+        margin-bottom: 10px;
+        font-size: 18px;
+    }
+    .summary-card p {
+        font-size: 24px;
+        font-weight: bold;
+    }
+    .charts {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+    }
+    .chart {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+</style>
+{% endblock %}

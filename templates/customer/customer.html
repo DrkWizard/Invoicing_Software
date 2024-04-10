@@ -8,7 +8,7 @@
     </div>
     <div class="action-buttons">
         <div class="add-customer-btn">
-            <button class="new-customer-button">New Customer</button>
+            <button class="new-customer-button" onclick="openModal()">Add New Client</button>
         </div>
     </div>
     
@@ -319,8 +319,66 @@
         <button>5</button>
         <button>Next &raquo;</button>
     </div>
-</div>
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
 
+    <!-- Modal content -->
+        <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="container">
+            <h2>New Client Information</h2>
+            <form class="client-form" action = "addnew/" method = "POST">
+                {% csrf_token %} 
+                    <div class="address-breakdown">
+                        <div class="form-group">
+                            <label for="company_name">Company Name</label>
+                            <input type="text" id="company_name" name="company_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="person_name">Person Name</label>
+                            <input type="text" id="person_name" name="person_name" required>
+                        </div>
+                    </div>
+                    <div class="address-breakdown">
+                        <div class="form-group">
+                            <label for="contact_number">Contact Number</label>
+                            <input type="tel" id="contact_number" name="contact_number" pattern="[6-9][0-9]{9}"  required title="Please enter a valid phone number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <textarea id="address" name="address" rows="4" required></textarea>
+                    </div>
+                    <div class="address-breakdown">
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <input type="text" id="city" name="city" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="state">State</label>
+                            <input type="text" id="state" name="state" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="zipcode">Zip Code</label>
+                            <input type="text" id="zipcode" name="zipcode" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="country">Country</label>
+                            <input type="text" id="country" name="country" required>
+                        </div>
+                    </div>
+                    <button type="submit">Save</button>
+                </form>
+            </form>
+        </div>
+        </div>
+    
+    </div>
+</div>
 
 <style>
     body {
@@ -343,7 +401,7 @@
     }
     .flip-card {
         background-color: transparent;
-        width: 100%;
+        width: 200px;
         height: 200px;
         perspective: 1000px;
     }
@@ -402,15 +460,15 @@
     .pagination button {
         margin: 0 5px;
         padding: 5px 10px;
-        background-color: #007bff;
-        color: #fff;
-        border: none;
+        background-color: transparent; /* Set background color to transparent */
+        color: #007bff; /* Set text color */
         border-radius: 3px;
         cursor: pointer;
         transition: background-color 0.3s ease;
     }
     .pagination button:hover {
-        background-color: #0056b3;
+        background-color: #007bff; /* Change background color on hover */
+        color: #fff;
     }
 
     .action-buttons {
@@ -450,5 +508,114 @@
         box-sizing: border-box;
         font-size: 16px;
     }
+
+    /* The Modal (background) */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 100px;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(0,0,0,0.4);
+}
+  /* Modal Content */
+    .modal-content {
+    background-color: #fefefe;
+    margin: auto; /* Center the modal horizontally */
+    margin-top: 7%; /* Adjust vertical margin as needed */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 70%;
+}
+  /* Close Button */
+    .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    }
+    .close:hover,
+    .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+    }
+    .client-form {
+    width: 100%;
+    margin: 0 auto;
+    }
+    .form-group {
+    margin-bottom: 20px;
+    }
+    label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    textarea {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        font-size: 16px;
+    }
+    textarea {
+        resize: vertical;
+    }
+    .address-breakdown {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+    }
+    button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
 </style>
+
+<script>
+// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal
+function openModal() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+function closeModal() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+
+    </script>
 {% endblock %}

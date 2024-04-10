@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}My Project{% endblock %}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.0.1/firebase-app.js"></script>
     <style>
         body {
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
+            overflow:hidden;
         }
         .sidebar {
             height: 100%;
@@ -51,7 +53,7 @@
 <body>
     <div class="sidebar">
         <ul>
-            <li><a href="#"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+            <li><a href="{% url 'dashboard:dashboard' %}"><i class="fas fa-chart-line"></i> Dashboard</a></li>
             <li><a href="#"><i class="fas fa-file-invoice-dollar"></i> Invoices</a></li>
             <li><a href="{% url 'customers:customer' %}"><i class="fas fa-users"></i> Customers</a></li>
             <li><a href="{% url 'products:product' %}"><i class="fas fa-box-open"></i> Products</a></li>
