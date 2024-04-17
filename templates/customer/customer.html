@@ -3,380 +3,98 @@
 {% block content %}
 <div class="container">
     <h2>My Clients</h2>
-    <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="Search by name...">
-    </div>
+    <form action="{% url 'customers:customer' %}" method="GET">
+        <div class="search-bar">
+            {% if input%}
+            <input type="text" id="searchInput" name="searchInput" placeholder="{{input}}">
+            {% else %}
+            <input type="text" id="searchInput" name="searchInput" placeholder="Search by company name...">
+            {% endif %}
+            <button id="searchButton" name ="searchButton"><i class="fas fa-search"></i></button>
+        </div>
+    </form>
     <div class="action-buttons">
         <div class="add-customer-btn">
             <button class="new-customer-button" onclick="openModal()">Add New Client</button>
         </div>
     </div>
-    
-
     <div class="customer-grid">
+    {% for cus in cus_data %}
         <div class="flip-card">
             <div class="flip-card-inner">
                 <div class="flip-card-front">
-                    <h3 class="customer-name">John Doe</h3>
+                    <h3 class="customer-name">{{cus.company_name}}</h3>
                 </div>
                 <div class="flip-card-back">
-                    <p>Email: john@example.com</p>
+                    <p>Number: {{cus.contact}}</p>
+                    <p>Email: {{cus.email}}</p>
                     <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
+                        <form method="post" action="{% url 'customers:del_customer' %}">
+                            {% csrf_token %}
+                            <button type="submit" name="edit_button" value="{{cus.company_name|safe}}"><i class="fas fa-edit"></i></button>
+                            <button type="submit" name="del_button" value="{{cus.company_name|safe}}"><i class="fas fa-trash-alt"></i></button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">aaa Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- More customer entries -->
-    </div>
-    <div class="pagination">
-        <button>&laquo; Prev</button>
-        <button>1</button>
-        <button>2</button>
-        <button>3</button>
-        <button>4</button>
-        <button>5</button>
-        <button>Next &raquo;</button>
-    </div>
-    <!-- The Modal -->
-    <div id="myModal" class="modal">
+    {% endfor %}
+</div>
 
-    <!-- Modal content -->
-        <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <div class="container">
-            <h2>New Client Information</h2>
-            <form class="client-form" action = "addnew/" method = "POST">
-                {% csrf_token %} 
-                    <div class="address-breakdown">
-                        <div class="form-group">
-                            <label for="company_name">Company Name</label>
-                            <input type="text" id="company_name" name="company_name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="person_name">Person Name</label>
-                            <input type="text" id="person_name" name="person_name" required>
-                        </div>
-                    </div>
-                    <div class="address-breakdown">
-                        <div class="form-group">
-                            <label for="contact_number">Contact Number</label>
-                            <input type="tel" id="contact_number" name="contact_number" pattern="[6-9][0-9]{9}"  required title="Please enter a valid phone number" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="address">Address</label>
-                        <textarea id="address" name="address" rows="4" required></textarea>
-                    </div>
-                    <div class="address-breakdown">
-                        <div class="form-group">
-                            <label for="city">City</label>
-                            <input type="text" id="city" name="city" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="state">State</label>
-                            <input type="text" id="state" name="state" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="zipcode">Zip Code</label>
-                            <input type="text" id="zipcode" name="zipcode" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="country">Country</label>
-                            <input type="text" id="country" name="country" required>
-                        </div>
-                    </div>
-                    <button type="submit">Save</button>
-                </form>
-            </form>
-        </div>
-        </div>
-    
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+<!-- Modal content -->
+<div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <div class="container">
+        <h2>New Client Information</h2>
+        <form class="client-form" action = "addnew/" method = "POST">
+            {% csrf_token %} 
+            <div class="address-breakdown">
+                <div class="form-group">
+                    <label for="company_name">Company Name</label>
+                    <input type="text" id="company_name" name="company_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="person_name">Person Name</label>
+                    <input type="text" id="person_name" name="person_name" required>
+                </div>
+            </div>
+            <div class="address-breakdown">
+                <div class="form-group">
+                    <label for="contact_number">Contact Number</label>
+                    <input type="tel" id="contact_number" name="contact_number" pattern="[6-9][0-9]{9}"  required title="Please enter a valid phone number" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="address">Address</label>
+                <textarea id="address" name="address" rows="4" required></textarea>
+            </div>
+            <div class="address-breakdown">
+                <div class="form-group">
+                    <label for="city">City</label>
+                    <input type="text" id="city" name="city" required>
+                </div>
+                <div class="form-group">
+                    <label for="state">State</label>
+                    <input type="text" id="state" name="state" required>
+                </div>
+                <div class="form-group">
+                    <label for="zipcode">Zip Code</label>
+                    <input type="text" id="zipcode" name="zipcode" required>
+                </div>
+                <div class="form-group">
+                    <label for="country">Country</label>
+                    <input type="text" id="country" name="country" required>
+                </div>
+            </div>
+            <button type="submit">Save</button>
+        </form>
     </div>
 </div>
 
@@ -396,7 +114,7 @@
     }
     .customer-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         gap: 20px;
     }
     .flip-card {
@@ -453,24 +171,6 @@
     .customer-actions i:hover {
         color: #000;
     }
-    .pagination {
-        margin-top: 20px;
-        text-align: center;
-    }
-    .pagination button {
-        margin: 0 5px;
-        padding: 5px 10px;
-        background-color: transparent; /* Set background color to transparent */
-        color: #007bff; /* Set text color */
-        border-radius: 3px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-    .pagination button:hover {
-        background-color: #007bff; /* Change background color on hover */
-        color: #fff;
-    }
-
     .action-buttons {
         width: 100%;
         display: flex;
@@ -497,16 +197,35 @@
     }
 
     .search-bar {
+        position: relative; /* Ensure the button is positioned relative to this container */
         margin-bottom: 20px;
     }
 
-    .search-bar input[type="text"] {
-        width: 100%;
+    #searchInput {
+        width: 100%; /* Adjust the width of the input field */
         padding: 10px;
         border-radius: 5px;
         border: 1px solid #ccc;
         box-sizing: border-box;
         font-size: 16px;
+    }
+
+    #searchButton {
+        position: absolute; /* Position the button relative to the search bar */
+        top: 1px;
+        right: 0;
+        background-color: transparent;
+        color: black;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
+
+    #searchButton:hover {
+        background-color: green;
+        color: white;
     }
 
     /* The Modal (background) */
@@ -587,6 +306,11 @@
     button:hover {
         background-color: #0056b3;
     }
+
+    .flip-card-back button{
+        background-color: transparent;
+        
+    }
 </style>
 
 <script>
@@ -601,21 +325,19 @@ var span = document.getElementsByClassName("close")[0];
 
 // When the user clicks the button, open the modal
 function openModal() {
-  modal.style.display = "block";
+    modal.style.display = "block";
 }
 
 // When the user clicks on <span> (x), close the modal
 function closeModal() {
-  modal.style.display = "none";
+    modal.style.display = "none";
 }
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
 }
-
-
     </script>
 {% endblock %}

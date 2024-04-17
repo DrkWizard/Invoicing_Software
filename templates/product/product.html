@@ -3,350 +3,67 @@
 {% block content %}
 <div class="container">
     <h2>My Products</h2>
-    <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="Search by name...">
-    </div>
+    <form action="{% url 'products:product' %}" method="GET">
+        <div class="search-bar">
+            {% if input%}
+                <input type="text" id="searchInput" name="searchInput" placeholder="{{input}}">
+            {% else %}
+                <input type="text" id="searchInput" name="searchInput" placeholder="Search by product name...">
+            {% endif %}
+            <button id="searchButton" name ="searchButton"><i class="fas fa-search"></i></button>
+        </div>
+    </form>
     <div class="action-buttons">
         <div class="add-customer-btn">
             <button class="new-customer-button" onclick="openModal()">Add New Product</button>
         </div>
     </div>
-    
-
     <div class="customer-grid">
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">John Doe</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: john@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
+        {% for pro in pro_data %}
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <h3 class="customer-name">{{pro.product_name}}</h3>
+                    </div>
+                    <div class="flip-card-back">
+                        <p>Amount: {{pro.amount}}</p>
+                        <div class="customer-actions">
+                            <form method="post" action="{% url 'products:del_product' %}">
+                                {% csrf_token %}
+                                <button type="submit" name="edit_button" value="{{pro.product_name}}"><i class="fas fa-edit"></i></button>
+                                <button type="submit" name="del_button" value="{{pro.product_name}}"><i class="fas fa-trash-alt"></i></button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">aaa Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h3 class="customer-name">Jane Smith</h3>
-                </div>
-                <div class="flip-card-back">
-                    <p>Email: jane@example.com</p>
-                    <div class="customer-actions">
-                        <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- More customer entries -->
+        {% endfor %}
     </div>
-    <div class="pagination">
-        <button>&laquo; Prev</button>
-        <button>1</button>
-        <button>2</button>
-        <button>3</button>
-        <button>4</button>
-        <button>5</button>
-        <button>Next &raquo;</button>
-    </div>
-    <!-- The Modal -->
-    <div id="myModal" class="modal">
+</div>
 
-    <!-- Modal content -->
-        <div class="modal-content">
+<!-- The Modal -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
         <span class="close" onclick="closeModal()">&times;</span>
         <div class="container">
             <h2>New Product Information</h2>
                 <form class="client-form" action="addnew/" method="POST">
-                    {% csrf_token %}
-                        <div class="form-group">
-                            <label for="product_name">Product Name</label>
-                            <input type="text" id="product_name" name="product_name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="amount">Amount</label>
-                            <input type="number" id="amount" name="amount" required>
-                        </div>
-                    <div class="form-group">
-                        <label for="description">Description</label>
-                        <textarea id="description" name="description" rows="4" required></textarea>
-                    </div>
-                    <button type="submit">Save</button>
-                </form>
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="product_name">Product Name</label>
+                    <input type="text" id="product_name" name="product_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="amount">Amount</label>
+                    <input type="number" id="amount" name="amount" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" rows="4" required></textarea>
+                </div>
+                <button type="submit">Save</button>
             </form>
         </div>
-        </div>
-    
     </div>
 </div>
 
@@ -366,7 +83,7 @@
     }
     .customer-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         gap: 20px;
     }
     .flip-card {
@@ -423,24 +140,6 @@
     .customer-actions i:hover {
         color: #000;
     }
-    .pagination {
-        margin-top: 20px;
-        text-align: center;
-    }
-    .pagination button {
-        margin: 0 5px;
-        padding: 5px 10px;
-        background-color: transparent; /* Set background color to transparent */
-        color: #007bff; /* Set text color */
-        border-radius: 3px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-    .pagination button:hover {
-        background-color: #007bff; /* Change background color on hover */
-        color: #fff;
-    }
-
     .action-buttons {
         width: 100%;
         display: flex;
@@ -467,16 +166,35 @@
     }
 
     .search-bar {
+        position: relative; /* Ensure the button is positioned relative to this container */
         margin-bottom: 20px;
     }
 
-    .search-bar input[type="text"] {
-        width: 100%;
+    #searchInput {
+        width: 100%; /* Adjust the width of the input field */
         padding: 10px;
         border-radius: 5px;
         border: 1px solid #ccc;
         box-sizing: border-box;
         font-size: 16px;
+    }
+
+    #searchButton {
+        position: absolute; /* Position the button relative to the search bar */
+        top: 1px;
+        right: 0;
+        background-color: transparent;
+        color: black;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
+
+    #searchButton:hover {
+        background-color: green;
+        color: white;
     }
 
     /* The Modal (background) */
@@ -492,7 +210,7 @@
     background-color: rgba(0,0,0,0.4);
 }
   /* Modal Content */
-    .modal-content {
+.modal-content {
     background-color: #fefefe;
     margin: auto; /* Center the modal horizontally */
     margin-top: 7%; /* Adjust vertical margin as needed */
@@ -526,8 +244,8 @@
     font-weight: bold;
     }
     input[type="text"],
-    input[type="email"],
     input[type="number"],
+    input[type="tel"],
     textarea {
         width: 100%;
         padding: 10px;
@@ -557,6 +275,11 @@
     button:hover {
         background-color: #0056b3;
     }
+
+    .flip-card-back button{
+        background-color: transparent;
+        
+    }
 </style>
 
 <script>
@@ -571,21 +294,20 @@ var span = document.getElementsByClassName("close")[0];
 
 // When the user clicks the button, open the modal
 function openModal() {
-  modal.style.display = "block";
+    modal.style.display = "block";
 }
 
 // When the user clicks on <span> (x), close the modal
 function closeModal() {
-  modal.style.display = "none";
+    modal.style.display = "none";
 }
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
 }
 
-
-    </script>
+</script>
 {% endblock %}
