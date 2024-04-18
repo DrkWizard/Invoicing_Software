@@ -9,24 +9,29 @@
             <p>₹10,000</p>
         </div>
         <div class="summary-card">
-            <h3>Total Customers</h3>
-            <p>500</p>
-        </div>
-        <div class="summary-card">
             <h3>Total Orders</h3>
             <p>1000</p>
         </div>
+        <div class="summary-card">
+            <h3>Total Clients</h3>
+            <p>{{customer_count}}</p>
+        </div>
+        <div class="summary-card">
+            <h3>Total Products</h3>
+            <p>{{product_count}}</p>
+        </div>
+    </div>
+    <div class="summary-cards">
+        <div class="summary-card">
+            <h3></h3>
+            <p></p>
+        </div>
+        <div class="summary-card">
+            <h3></h3>
+            <p></p>
+        </div>
     </div>
 
-    <div class="charts">
-        <div class="chart">
-            <!-- Insert chart here -->
-        </div>
-        <div class="chart">
-            <!-- Insert chart here -->
-        </div>
-    </div>
-</div>
 
 <style>
     .container {
@@ -41,10 +46,11 @@
         display: flex;
         justify-content: space-between;
         margin-bottom: 20px;
+        gap: 10px;
     }
     .summary-card {
         flex: 1;
-        padding: 20px;
+        padding: 10px;
         background-color: #fff;
         border-radius: 5px;
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
@@ -56,17 +62,6 @@
     .summary-card p {
         font-size: 24px;
         font-weight: bold;
-    }
-    .charts {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 20px;
-    }
-    .chart {
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     }
 </style>
 {% endblock %}

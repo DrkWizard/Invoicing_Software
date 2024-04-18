@@ -26,8 +26,8 @@
                     <h3 class="customer-name">{{cus.company_name}}</h3>
                 </div>
                 <div class="flip-card-back">
-                    <p>Number: {{cus.contact}}</p>
-                    <p>Email: {{cus.email}}</p>
+                    <p>Name: {{cus.person_name}}</p>
+                    <p>contact: {{cus.contact}}</p>
                     <div class="customer-actions">
                         <form method="post" action="{% url 'customers:del_customer' %}">
                             {% csrf_token %}
@@ -54,43 +54,43 @@
             <div class="address-breakdown">
                 <div class="form-group">
                     <label for="company_name">Company Name</label>
-                    <input type="text" id="company_name" name="company_name" required>
+                    <input type="text" id="company_name" name="company_name"  autocomplete="off" required>
                 </div>
                 <div class="form-group">
                     <label for="person_name">Person Name</label>
-                    <input type="text" id="person_name" name="person_name" required>
+                    <input type="text" id="person_name" name="person_name"  autocomplete="off" required>
                 </div>
             </div>
             <div class="address-breakdown">
                 <div class="form-group">
                     <label for="contact_number">Contact Number</label>
-                    <input type="tel" id="contact_number" name="contact_number" pattern="[6-9][0-9]{9}"  required title="Please enter a valid phone number" required>
+                    <input type="tel" id="contact_number" name="contact_number" pattern="[6-9][0-9]{9}"  required title="Please enter a valid phone number"  autocomplete="off" required>
                 </div>
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
+                    <input type="email" id="email" name="email"  autocomplete="off" required>
                 </div>
             </div>
             <div class="form-group">
                 <label for="address">Address</label>
-                <textarea id="address" name="address" rows="4" required></textarea>
+                <textarea id="address" name="address" rows="4"  autocomplete="off" required></textarea>
             </div>
             <div class="address-breakdown">
                 <div class="form-group">
                     <label for="city">City</label>
-                    <input type="text" id="city" name="city" required>
+                    <input type="text" id="city" name="city"  autocomplete="off" required>
                 </div>
                 <div class="form-group">
                     <label for="state">State</label>
-                    <input type="text" id="state" name="state" required>
+                    <input type="text" id="state" name="state"  autocomplete="off" required>
                 </div>
                 <div class="form-group">
                     <label for="zipcode">Zip Code</label>
-                    <input type="text" id="zipcode" name="zipcode" required>
+                    <input type="text" id="zipcode" name="zipcode"  autocomplete="off" required>
                 </div>
                 <div class="form-group">
                     <label for="country">Country</label>
-                    <input type="text" id="country" name="country" required>
+                    <input type="text" id="country" name="country" value= "India" autocomplete="off" required>
                 </div>
             </div>
             <button type="submit">Save</button>
