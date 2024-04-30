@@ -38,6 +38,7 @@ def new_product(request):
                     'product_name': product_name,
                     'amount': amount,
                     'description': description,
+                    'qty_sold':0,
                }
                db_connect.add(data)
           else:

@@ -50,7 +50,8 @@ def new_customer(request):
                'city': city,
                'state': state,
                'country': country,
-               'zip_code': zipcode
+               'zip_code': zipcode,
+               'order_number':0,
           }
           db_connect.add(data)
           

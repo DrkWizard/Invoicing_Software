@@ -7,8 +7,11 @@ db = firestore.client()
 db_connect_customer = db.collection('customer')
 db_connect_product = db.collection('product')
 
+data = []
 
 def invoice(request):
+     global data
+     data = []
      today = date.today().isoformat() 
      customers = db_connect_customer.get()
      products = db_connect_product.get()
@@ -24,6 +27,7 @@ def invoice(request):
 
 
 def fetch_data(request):
+     global data
      selected_option = request.GET['option']
      if selected_option == "default":
           data = ["select a client"]
@@ -31,7 +35,7 @@ def fetch_data(request):
           d = db_connect_customer.where("company_name",'==',selected_option).get()
           for doc in d:
                single = doc.to_dict()  # Convert Firestore document to Python dictionary
-          data = [single["person_name"],single["contact"],single["address"]]
+          data = [single["person_name"],single["contact"],single["address"],single["order_number"],single["company_name"]]
      return JsonResponse({'data': data})
 
 def fetch_data_product(request):
@@ -44,3 +48,16 @@ def fetch_data_product(request):
      else:
           res  = [""]
      return JsonResponse({'res':res} )
+
+
+def generate_invoice(request):
+     if request.method == 'POST' and len(data):
+          customer_invoice = db_connect_customer.where("company_name",'==',data[4]).get()
+          for c in customer_invoice:
+               c_id = c.id
+               o_order = c.to_dict()["order_number"]
+               c_ref = db_connect_customer.document(c_id)
+               c_ref.update({"order_number": o_order +1 })     
+     else:
+          print("ee")
+     return redirect('invoices:invoice')

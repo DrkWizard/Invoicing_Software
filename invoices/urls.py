@@ -8,4 +8,5 @@ urlpatterns = [
     path('', views.invoice, name='invoice'),
     path('fetch_data/', views.fetch_data, name='fetch_data'),
     path('fetch_data_product/', views.fetch_data_product, name='fetch_data_product'),
+    path('generate/', views.generate_invoice, name='generate_invoice'),
 ]
