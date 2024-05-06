@@ -30,11 +30,15 @@
                     <p>Name: {{cus.person_name}}</p>
                     <p>contact: {{cus.contact}}</p>
                     <div class="customer-actions">
-                        <form method="post" action="{% url 'customers:del_customer' %}">
-                            {% csrf_token %}
-                            <button type="submit" name="edit_button" value="{{cus.company_name|safe}}"><i class="fas fa-edit"></i></button>
-                            <button type="submit" name="del_button" value="{{cus.company_name|safe}}"><i class="fas fa-trash-alt"></i></button>
-                        </form>
+                        <div class="button-row">
+                            <form method="post" action="{% url 'customers:del_customer' %}">
+                                {% csrf_token %}
+                                <button type="submit" name="del_button" value="{{cus.company_name|safe}}" ><i class="fas fa-trash-alt"></i></button>
+                                <button name="edit_button" value="{{cus.company_name|safe}}"><i class="fas fa-edit"></i></button>
+                            </form>
+                            
+                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -45,59 +49,61 @@
 <!-- The Modal -->
 <div id="myModal" class="modal">
 
-<!-- Modal content -->
-<div class="modal-content">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <div class="container">
-        <h2>New Client Information</h2>
-        <form class="client-form" action = "addnew/" method = "POST">
-            {% csrf_token %} 
-            <div class="address-breakdown">
-                <div class="form-group">
-                    <label for="company_name">Company Name</label>
-                    <input type="text" id="company_name" name="company_name"  autocomplete="off" required>
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="container">
+            <h2>New Client Information</h2>
+            <form class="client-form" action = "addnew/" method = "POST">
+                {% csrf_token %} 
+                <div class="address-breakdown">
+                    <div class="form-group">
+                        <label for="company_name">Company Name</label>
+                        <input type="text" id="company_name" name="company_name"  autocomplete="off" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="person_name">Person Name</label>
+                        <input type="text" id="person_name" name="person_name"  autocomplete="off" required>
+                    </div>
+                </div>
+                <div class="address-breakdown">
+                    <div class="form-group">
+                        <label for="contact_number">Contact Number</label>
+                        <input type="tel" id="contact_number" name="contact_number" pattern="[6-9][0-9]{9}"  required title="Please enter a valid phone number"  autocomplete="off" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email"  autocomplete="off" required>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="person_name">Person Name</label>
-                    <input type="text" id="person_name" name="person_name"  autocomplete="off" required>
+                    <label for="address">Address</label>
+                    <textarea id="address" name="address" rows="4"  autocomplete="off" required></textarea>
                 </div>
-            </div>
-            <div class="address-breakdown">
-                <div class="form-group">
-                    <label for="contact_number">Contact Number</label>
-                    <input type="tel" id="contact_number" name="contact_number" pattern="[6-9][0-9]{9}"  required title="Please enter a valid phone number"  autocomplete="off" required>
+                <div class="address-breakdown">
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input type="text" id="city" name="city"  autocomplete="off" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="state">State</label>
+                        <input type="text" id="state" name="state"  autocomplete="off" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="zipcode">Zip Code</label>
+                        <input type="text" id="zipcode" name="zipcode"  autocomplete="off" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="country">Country</label>
+                        <input type="text" id="country" name="country" value= "India" autocomplete="off" required>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email"  autocomplete="off" required>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="address">Address</label>
-                <textarea id="address" name="address" rows="4"  autocomplete="off" required></textarea>
-            </div>
-            <div class="address-breakdown">
-                <div class="form-group">
-                    <label for="city">City</label>
-                    <input type="text" id="city" name="city"  autocomplete="off" required>
-                </div>
-                <div class="form-group">
-                    <label for="state">State</label>
-                    <input type="text" id="state" name="state"  autocomplete="off" required>
-                </div>
-                <div class="form-group">
-                    <label for="zipcode">Zip Code</label>
-                    <input type="text" id="zipcode" name="zipcode"  autocomplete="off" required>
-                </div>
-                <div class="form-group">
-                    <label for="country">Country</label>
-                    <input type="text" id="country" name="country" value= "India" autocomplete="off" required>
-                </div>
-            </div>
-            <button type="submit">Save</button>
-        </form>
+                <button type="submit">Save</button>
+            </form>
+        </div>
     </div>
 </div>
+
 
 <style>
     body {
@@ -312,33 +318,39 @@
         background-color: transparent;
         
     }
+    .button-row {
+        display: flex;
+        align-items: center; /* Optional: Center align items vertically */
+    }
+    
 </style>
 
 <script>
 // Get the modal
-var modal = document.getElementById("myModal");
+    var modal = document.getElementById("myModal");
 
-// Get the button that opens the modal
-var btn = document.getElementById("myBtn");
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
 
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
 
-// When the user clicks the button, open the modal
-function openModal() {
-    modal.style.display = "block";
-}
+    // When the user clicks the button, open the modal
+    function openModal() {
+        modal.style.display = "block";
+    }
 
-// When the user clicks on <span> (x), close the modal
-function closeModal() {
-    modal.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
+    // When the user clicks on <span> (x), close the modal
+    function closeModal() {
         modal.style.display = "none";
     }
-}
-    </script>
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+</script>
 {% endblock %}

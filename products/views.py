@@ -57,5 +57,21 @@ def del_product(request):
                     doc_ref = db_connect.document(d.id)
                     doc_ref.delete()
           if(button_edit_value):
-               print("edit")
+               return redirect("products:edit_product", productName=button_edit_value)
      return redirect("products:product")
+
+
+def edit_product(request, productName):
+     product_ref = db_connect.where("product_name", '==', productName).get()[0].reference
+     product = product_ref.get().to_dict()
+     if request.method == 'POST' and request.POST.get('save'):
+          updated_data = {
+               'amount': request.POST.get('amount'),
+               'description': request.POST.get('description'),
+          }
+          product_ref = db_connect.where("product_name", '==', productName).get()[0].reference
+          product_ref.update(updated_data)
+          return redirect("products:product")
+     elif request.method=='POST':
+          return redirect("products:product")
+     return render(request, 'product/edit.html',{'amount': product['amount'],'product_name' : productName,'description':product['description']})

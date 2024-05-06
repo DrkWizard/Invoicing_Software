@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<title>{% block title %}Edit Client{% endblock %}</title>
+<div class="container">
+    <h2>Edit Client</h2>
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="company_name">Company Name</label>
+            <input type="text" id="company_name" name="company_name" value="{{ company_name }}" required disabled>
+        </div>
+        <div class="form-group">
+            <label for="person_name">Person Name</label>
+            <input type="text" id="person_name" name="person_name" value="{{ person_name }}" required>
+        </div>
+        <div class="form-group">
+            <label for="contact_number">Contact Number</label>
+            <input type="tel" id="contact_number" name="contact_number" value="{{ contact }}" pattern="[6-9][0-9]{9}" required title="Please enter a valid phone number">
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" value="{{ email }}" required>
+        </div>
+        <div class="form-group">
+            <label for="address">Address</label>
+            <textarea id="address" name="address" rows="4" required>{{address }}</textarea>
+        </div>
+        <div class="address-breakdown">
+            <div class="form-group">
+                <label for="city">City</label>
+                <input type="text" id="city" name="city" value="{{ city }}" required>
+            </div>
+            <div class="form-group">
+                <label for="state">State</label>
+                <input type="text" id="state" name="state" value="{{ state }}" required>
+            </div>
+            <div class="form-group">
+                <label for="zipcode">Zip Code</label>
+                <input type="text" id="zipcode" name="zipcode" value="{{ zip_code }}" required>
+            </div>
+            <div class="form-group">
+                <label for="country">Country</label>
+                <input type="text" id="country" name="country" value="{{ country }}" required>
+            </div>
+        </div>
+        <button type="submit" name = "save" value="clicked">Save Changes</button>
+        <button style="background:Red" type="submit">Cancel</button>
+    </form>
+</div>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+    .container {
+        max-width: 2000px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    textarea {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        font-size: 16px;
+    }
+    textarea {
+        resize: vertical;
+    }
+    .address-breakdown {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+    }
+    button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    .flip-card-back button{
+        background-color: transparent;
+        
+    }
+    .button-row {
+        display: flex;
+        align-items: center; /* Optional: Center align items vertically */
+    }
+    .form-group {
+        margin-bottom: 20px;
+        }
+        label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        }
+</style>
+
+
+{% endblock %}

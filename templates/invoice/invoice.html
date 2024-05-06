@@ -4,16 +4,17 @@
 <title>{% block title %}invoice{% endblock %}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
 <div class="container">
     <h2>Invoice</h2>
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
+                
                 <div class="card-body">
                     <div class="invoice-title">
-                        <h4 class="float-end font-size-15">Invoice #DS0204 </h4>
+                        <h4 class="float-end font-size-15" id="invoice_n">#</h4>
                         <div class="mb-4">
                             <h2 class="mb-1 text-muted">Bootdey.com</h2>
                         </div>
@@ -49,7 +50,7 @@
                             <div class="text-muted text-sm-end">
                                 <div class="mt-4">
                                     <h5 class="font-size-15 mb-1">Invoice Date:</h5>
-                                    <p>{{today}}</p>
+                                    <input class="font-size-15 " type ="date" value = {{today}} id="bill_date">
                                 </div>
                                 <div class="mt-4">
                                     <h5 class="font-size-15 mb-1">Order No:</h5>
@@ -61,13 +62,14 @@
                     <div class="py-2">
                         <h5 class="font-size-15">Order Summary &nbsp</h5>
                         <div class="table-responsive">
-                            <table class="table align-middle table-nowrap table-centered mb-0" id="invoice-table">
+                            <table class="table align-middle table-nowrap table-centered mb-0" id="invoice-table" name="invoice-table">
                                 <thead>
                                     <tr>
+                                        <th style="width: 70px;"></th>
                                         <th style="width: 70px;">No.</th>
                                         <th>Item</th>
-                                        <th>Price</th>
                                         <th>Quantity</th>
+                                        <th>Price</th>
                                         <th class="text-end" style="width: 120px;">Total</th>
                                     </tr>
                                 </thead>
@@ -83,51 +85,26 @@
                             text-decoration: none;
                             display: inline-block;
                             margin: 4px 2px;
-                            cursor: pointer;font-size: 10px;" onclick="openModal()"><i class="fas fa-plus"></i> </button>
+                            cursor: pointer;font-size: 10px;" onclick="addRow()"><i class="fas fa-plus"></i> </button>
                             <div id="total-amount">
-                                <h2>Total Amount</h2>
-                                <p id="total">Rs0.00</p>
+                                <h2>Total Amount(₹)</h2>
+                                <p id="total">0.00</p>
                             </div>
                         </div>
                         <div class="d-print-none mt-4">
                             <div class="float-end">
                                 
-                                <form action="generate/" method="POST">
+                                <form action="generate/" id="table-form" method="POST">
                                     {% csrf_token %}
                                     <a href="javascript:window.print()" class="btn btn-success me-1"><i class="fa fa-print"></i></a>
-                                    <button class="btn btn-primary w-md" type='submit'>Generate</a>
+                                    <button class="btn btn-primary w-md" type='submit' id="generate" name="generate" >Generate</a>
                                 </form>
+                                
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-<div id="myModal" class="modal">
-    <div class="modal-content">
-        <div class="add-product">
-            <h3>Add Product to Invoice</h3>
-            <hr>
-            <div class="form-group">
-                <label for="product-name">Product Name:</label>
-                <input list='productnames' name="product-name" id="product-name"  placeholder="Enter Product name">
-                <datalist id="productnames">
-                    {% for product in pro_data%}
-                        <option value="{{product.product_name}}">
-                    {% endfor %}
-                </datalist>
-            </div>
-            <div class="form-group">
-                <label for="quantity">Quantity:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>
-                <input type="number" id="quantity" placeholder="Enter quantity" min="1">
-            </div>
-            <div class="form-group">
-                <label for="quantity">Price per unit:</label>
-                <input type="text" id="price"  placeholder="Enter price per unit" min="1">
-            </div>
-            <button onclick="addProduct()">To Invoice</button>
         </div>
     </div>
 </div>
@@ -157,49 +134,12 @@
         border-radius: 1rem;
     }
 
-    /* Modal Content */
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.4);
-    }
-
-    .modal-content {
-        background-color: #fefefe;
-        top: 100px;
-        margin: auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 70%;
-        border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .add-product h3 {
-        margin: 0 0 10px;
-        color: #333;
-    }
-
-    .add-product hr {
-        margin-bottom: 20px;
-    }
-
-    .modal-content .form-group {
-        margin-bottom: 20px;
-    }
-
-    .modal-content label {
+    .invoice-table label {
         color: #555;
     }
 
-    .modal-content input,
-    .modal-content input[type="number"] {
+    .invoice-table input,
+    .invoice-table input[type="number"] {
         padding: 10px;
         border-radius: 5px;
         border: 1px solid #ccc;
@@ -223,61 +163,61 @@
         color: #007bff;
     }
 </style>
-
 <script>
-    function openModal() {
-        var modal = document.getElementById("myModal");
-        modal.style.display = "block";
-    }
 
-    function closeModal() {
-        var modal = document.getElementById("myModal");
-        modal.style.display = "none";
-    }
-
-    // Function to add a new product to the invoice
-    function addProduct() {
-        var productName = document.getElementById("product-name").value;
-        var quantity = parseInt(document.getElementById("quantity").value);
-        var price = parseFloat(document.getElementById("price").value);
-
-        // Validate input
-        if (productName === "" || isNaN(quantity) || isNaN(price) || quantity < 1 || price < 0.01) {
-            alert("Please enter valid product details.");
-            return;
-        }
-
-        // Calculate total
-        var sub_total = (quantity * price).toFixed(2);
-
-        // Add product to invoice table
+    function addRow() {
         var table = document.getElementById("invoice-table").getElementsByTagName('tbody')[0];
-        var newRow = table.insertRow(table.rows.length);
-        var cellNum = newRow.insertCell(0);
-        var cellItem = newRow.insertCell(1);
-        var cellPrice = newRow.insertCell(2);
-        var cellQuantity = newRow.insertCell(3);
-        var cellTotal = newRow.insertCell(4);
-
-        cellNum.innerHTML = table.rows.length;
-        cellItem.innerHTML = productName;
-        cellPrice.innerHTML = "₹" + price.toFixed(2);
-        cellQuantity.innerHTML = quantity;
-        cellTotal.innerHTML = "₹" + sub_total;
-
-        // Update total amount
-        updateTotal();
-
-        // Clear input fields
-        document.getElementById("product-name").value = "";
-        document.getElementById("quantity").value = "";
-        document.getElementById("price").value = "";
-
-        // Close modal after adding product
-        closeModal();
+        var newRow = table.insertRow();
+        var cells = [];
+        for (var i = 0; i < 6; i++) {
+            cells[i] = newRow.insertCell(i);
+        }
+        var rowId = 'row_' + table.rows.length;
+        cells[0].innerHTML = '<button style="font-size:12px;" onclick="removeRow(this)"><i class="material-icons" style="color:red">delete</i></button>';
+        cells[1].textContent = table.rows.length;
+        cells[2].innerHTML = '<input list="' + rowId + '_productnames" name="product-name" id="' + rowId + '_product-name" placeholder="Enter Product name"><datalist id="' + rowId + '_productnames">{% for product in pro_data %}<option value="{{ product.product_name }}">{{ product.product_name }}</option>{% endfor %}</datalist>';
+        cells[3].innerHTML = '<input type="number" id="' + rowId + '_quantity" placeholder="Enter quantity" min="1">';
+        cells[4].innerHTML = '<input type="text" id="' + rowId + '_price" placeholder="Price per unit" min="1">';
+        cells[5].innerHTML = '';
+        document.getElementById(rowId + '_quantity').addEventListener("input", function() {
+            var quantity = parseInt(document.getElementById(rowId + '_quantity').value);
+            var price = parseFloat(document.getElementById(rowId + '_price').value);
+            var sub_total = (quantity * price).toFixed(2);
+            cells[5].textContent = "₹" + sub_total;
+            updateTotal();
+        });
+        document.getElementById(rowId + '_price').addEventListener("input", function() {
+            var quantity = parseInt(document.getElementById(rowId + '_quantity').value);
+            var price = parseFloat(document.getElementById(rowId + '_price').value);
+            var sub_total = (quantity * price).toFixed(2);
+            cells[5].textContent = "₹" + sub_total;
+            updateTotal();
+        });
+    
+        document.getElementById(rowId + '_product-name').addEventListener("change", function() {
+            var selectedOption = this.value;
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "{% url 'invoices:fetch_data_product' %}" + "?option=" + selectedOption, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var responseData = JSON.parse(xhr.responseText);
+                    document.getElementById(rowId + '_price').value = responseData.res;
+                    var quantity = parseInt(document.getElementById(rowId + '_quantity').value);
+                    var sub_total = (quantity *responseData.res).toFixed(2);
+                    cells[5].textContent = "₹" + sub_total;
+                    updateTotal();
+                }
+            };
+            xhr.send();
+        });
+    }
+    
+    function removeRow(button) {
+        var row = button.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+        updateTotal()
     }
 
-    // Function to update the total amount
     function updateTotal() {
         var total = 0;
         var table = document.getElementById("invoice-table").getElementsByTagName('tbody')[0];
@@ -285,18 +225,12 @@
         for (var i = 0; i < rows.length; i++) {
             var cells = rows[i].getElementsByTagName("td");
             if (cells.length >= 5) {
-                total += parseFloat(cells[4].innerHTML.replace("₹", ""));
+                total += parseFloat(cells[5].innerHTML.replace("₹", ""));
             }
         }
-        document.getElementById("total").textContent = "₹" + total.toFixed(2);
+        document.getElementById("total").textContent = total.toFixed(2);
     }
 
-    window.onclick = function (event) {
-        var modal = document.getElementById("myModal");
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
     document.getElementById("select_client").addEventListener("change", function() {
         event.preventDefault();
         var selectedOption = this.value;
@@ -317,6 +251,7 @@
                     paragraphs[1].textContent = data_arr[1]
                     paragraphs[2].textContent = data_arr[2]
                     document.getElementById("order-number").textContent= data_arr[3] + 1;
+                    document.getElementById("invoice_n").textContent= data_arr[5];
                 }
                 else{
                     paragraphs[0].textContent = 'select a client'
@@ -326,20 +261,49 @@
                 }
             }
         };
-    xhr.send();
+        xhr.send();
     });
-    
-    document.getElementById("product-name").addEventListener("change", function() {
-        var selectedOption = this.value;
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", "{% url 'invoices:fetch_data_product' %}"+"?option="+selectedOption, true);
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                var responseData = JSON.parse(xhr.responseText);
-                document.getElementById("price").value = responseData.res
-            }
-        };
-    xhr.send();
+
+
+
+    document.getElementById('table-form').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission
+        
+        var tableData = [];
+        var tableRows = document.querySelectorAll('#invoice-table tbody tr');
+        tableRows.forEach(function(row) {
+            var rowData = [];
+            row.querySelectorAll('td').forEach(function(cell) {
+                var input = cell.querySelector('input');
+                if (input) {
+                    rowData.push(input.value);
+                } else {
+                    rowData.push(cell.textContent);
+                }
+            });
+            tableData.push(rowData);
+        });
+
+        var hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.name = 'table_data';
+        hiddenInput.value = JSON.stringify(tableData);
+
+        var date_bill = document.createElement('input')
+        date_bill.type = 'hidden';
+        date_bill.name = 'billdate';
+        date_bill.value = document.getElementById("bill_date").value;
+
+        var totall= document.createElement('input')
+        totall.type = 'hidden';
+        totall.name = 'total_amount';
+        totall.value = document.getElementById("total").textContent;
+
+        document.getElementById('table-form').appendChild(hiddenInput);
+        document.getElementById('table-form').appendChild(date_bill);
+        document.getElementById('table-form').appendChild(totall);
+        document.getElementById('table-form').submit();
     });
+
 </script>
 {% endblock %}

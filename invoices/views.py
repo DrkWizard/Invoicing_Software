@@ -2,11 +2,12 @@ from django.shortcuts import render,redirect
 from firebase_admin import firestore
 from datetime import date
 from django.http import JsonResponse
+import json
 
 db = firestore.client()
 db_connect_customer = db.collection('customer')
 db_connect_product = db.collection('product')
-
+db_connect_invoice = db.collection('invoice')
 data = []
 
 def invoice(request):
@@ -23,11 +24,10 @@ def invoice(request):
      for doc1 in products:
           prod_data = doc1.to_dict()  # Convert Firestore document to Python dictionary
           pro_data.append(prod_data)
-     return render(request, 'invoice/invoice.html',{'data':cus_data,'pro_data':pro_data,'today':today})
-
+     return render(request, 'invoice/invoice.html',{'data':cus_data,'pro_data':pro_data,'today':today,})
 
 def fetch_data(request):
-     global data
+     global data,invoice_gen
      selected_option = request.GET['option']
      if selected_option == "default":
           data = ["select a client"]
@@ -35,7 +35,9 @@ def fetch_data(request):
           d = db_connect_customer.where("company_name",'==',selected_option).get()
           for doc in d:
                single = doc.to_dict()  # Convert Firestore document to Python dictionary
-          data = [single["person_name"],single["contact"],single["address"],single["order_number"],single["company_name"]]
+               o_order = single["order_number"]
+               invoice_gen = f"#OWNERautocount-ordernumber"
+          data = [single["person_name"],single["contact"],single["address"],single["order_number"],single["company_name"],invoice_gen]
      return JsonResponse({'data': data})
 
 def fetch_data_product(request):
@@ -49,15 +51,38 @@ def fetch_data_product(request):
           res  = [""]
      return JsonResponse({'res':res} )
 
-
 def generate_invoice(request):
      if request.method == 'POST' and len(data):
-          customer_invoice = db_connect_customer.where("company_name",'==',data[4]).get()
+          companyName = data[4]
+          table_data_json = request.POST.get('table_data')
+          prod_data = json.loads(table_data_json)
+          total = request.POST.get('total_amount')
+          bill_date = request.POST.get('billdate')
+          print(prod_data)
+          invoice_data = {
+               'company_name': companyName,
+               'date': bill_date,
+               'total_amount': float(total),
+               'invoice_number': invoice_gen,
+               'paid' : False,
+               'ordered_products': [{'sno': i[1], 'product_name': i[2] ,'qty': int(i[3]) ,'unit_price': float(i[4]),'sub_total': i[5]} for i in prod_data]
+          }
+          for i in prod_data:
+               print(i)
+               product_info = db_connect_product.where("product_name",'==',i[2]).get()
+               for p in product_info:
+                    p_id = p.id
+                    q_old = p.to_dict()["qty_sold"]
+                    p_ref = db_connect_product.document(p_id)
+                    p_ref.update({"qty_sold": q_old +int(i[3]) }) 
+                    
+          db_connect_invoice.add(invoice_data)
+          customer_invoice = db_connect_customer.where("company_name",'==',companyName).get()
           for c in customer_invoice:
                c_id = c.id
                o_order = c.to_dict()["order_number"]
                c_ref = db_connect_customer.document(c_id)
-               c_ref.update({"order_number": o_order +1 })     
+               c_ref.update({"order_number": o_order +1 })  
      else:
           print("ee")
      return redirect('invoices:invoice')

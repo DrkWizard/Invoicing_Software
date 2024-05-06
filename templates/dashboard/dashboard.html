@@ -7,11 +7,11 @@
     <div class="summary-cards">
         <div class="summary-card">
             <h3>Total Revenue</h3>
-            <p>₹10,000</p>
+            <p>₹{{total_revenue}}</p>
         </div>
         <div class="summary-card">
             <h3>Total Orders</h3>
-            <p>1000</p>
+            <p>{{invoice_count}}</p>
         </div>
         <div class="summary-card">
             <h3>Total Clients</h3>
@@ -32,6 +32,7 @@
             <p></p>
         </div>
     </div>
+    {{ no_products|safe }}
 
 
 <style>

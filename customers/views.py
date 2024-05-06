@@ -66,12 +66,31 @@ def del_customer(request):
           if(button_del_value):
                del_data = db_connect.where("company_name",'==',button_del_value).get()
                for d in del_data:
-                    print(d.id)
                     doc_ref = db_connect.document(d.id)
                     doc_ref.delete()
           if(button_edit_value):
-               print("edit")
+               return redirect("customers:edit_customer", companyName=button_edit_value)
      return redirect("customers:customer")
-     
-     
-     
+
+
+def edit_customer(request, companyName):
+     customer_ref = db_connect.where("company_name", '==', companyName).get()[0].reference
+     customer = customer_ref.get().to_dict()
+     if request.method == 'POST' and request.POST.get('save'):
+          updated_data = {
+               'person_name': request.POST.get('person_name'),
+               'contact': request.POST.get('contact_number'),
+               'email': request.POST.get('email'),
+               'address': request.POST.get('address'),
+               'state': request.POST.get('state'),
+               'zip_code': request.POST.get('zipcode'),
+               'country': request.POST.get('country'),
+               'city': request.POST.get('city'),
+          }
+          customer_ref = db_connect.where("company_name", '==', companyName).get()[0].reference
+          customer_ref.update(updated_data)
+          return redirect("customers:customer")
+     elif request.method=='POST':
+          return redirect("customers:customer")
+     return render(request, 'customer/edit.html',{'contact': customer['contact'],'company_name' : companyName,'person_name':customer['person_name'],'email': customer['email'],'address':customer['address'],
+                                                  'state': customer['state'],'zip_code': customer['zip_code'],'country': customer['country'], 'city':customer['city'] })
