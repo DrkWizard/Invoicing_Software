@@ -4,16 +4,9 @@
 <title>{% block title %}clients{% endblock %}</title>
 <div class="container">
     <h2>My Clients</h2>
-    <form action="{% url 'customers:customer' %}" method="GET">
         <div class="search-bar">
-            {% if input%}
-            <input type="text" id="searchInput" name="searchInput" placeholder="{{input}}">
-            {% else %}
-            <input type="text" id="searchInput" name="searchInput" placeholder="Search by company name...">
-            {% endif %}
-            <button id="searchButton" name ="searchButton"><i class="fas fa-search"></i></button>
+            <input type="text" id="searchInput" name="searchInput" placeholder="Search by company name..." autocomplete="off">
         </div>
-    </form>
     <div class="action-buttons">
         <div class="add-customer-btn">
             <button class="new-customer-button" onclick="openModal()">Add New Client</button>
@@ -24,7 +17,7 @@
         <div class="flip-card">
             <div class="flip-card-inner">
                 <div class="flip-card-front">
-                    <h3 class="customer-name">{{cus.company_name}}</h3>
+                    <h3 class="customer-name" id="name_filter">{{cus.company_name}}</h3>
                 </div>
                 <div class="flip-card-back">
                     <p>Name: {{cus.person_name}}</p>
@@ -129,6 +122,7 @@
         width: 200px;
         height: 200px;
         perspective: 1000px;
+        display: 'none';
     }
     .flip-card-inner {
         width: 100%;
@@ -225,15 +219,9 @@
         color: black;
         border: none;
         border-radius: 5px;
-        cursor: pointer;
         font-size: 16px;
-        transition: background-color 0.3s ease;
     }
 
-    #searchButton:hover {
-        background-color: green;
-        color: white;
-    }
 
     /* The Modal (background) */
 .modal {
@@ -351,6 +339,23 @@
             modal.style.display = "none";
         }
     }
+
+    const searchInput = document.getElementById('searchInput');
+    const customerCards = document.querySelectorAll('.flip-card-front');
+    function filter() {
+        const searchText = searchInput.value.toLowerCase();
+        customerCards.forEach(card => {
+            const companyName = card.textContent.toLowerCase()
+            console.log(companyName)
+            if (companyName.includes(searchText)) {
+                card.style.display = '';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+    
+    searchInput.addEventListener('input', filter);
 
 </script>
 {% endblock %}

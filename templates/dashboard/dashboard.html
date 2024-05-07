@@ -11,7 +11,8 @@
         </div>
         <div class="summary-card">
             <h3>Total Orders</h3>
-            <p>{{invoice_count}}</p>
+            <p>{{invoice_count}} <a href="{% url 'invoices:view_invoice' %}">view invoices</a></p>
+            
         </div>
         <div class="summary-card">
             <h3>Total Clients</h3>
@@ -64,6 +65,28 @@
     .summary-card p {
         font-size: 24px;
         font-weight: bold;
+    }
+    .summary-card a:link {
+        text-decoration: none;
+        color: black;
+        font-size: 12px;
+        float: right;
+        margin-top: 30px;
+    }
+    
+    .summary-card a:visited {
+        text-decoration: none;
+        color: black;
+    }
+    
+    .summary-card a:hover {
+        text-decoration: none;
+        color: blue;
+    }
+    
+    .summary-card a:active {
+        text-decoration: none;
+        color: black;
     }
 </style>
 {% endblock %}

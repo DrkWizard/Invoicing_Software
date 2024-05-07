@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<title>{% block title %}My Invoices{% endblock %}</title>
+<style>
+    .container {
+        max-width: 2000px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .search-bar {
+        position: relative;
+        width: 500px;
+        margin-left: auto;
+    }
+
+    #searchInput {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        font-size: 16px;
+    }
+
+    #searchButton {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 0 5px 5px 0;
+        cursor: pointer;
+        font-size: 16px;
+        padding: 10px;
+        transition: background-color 0.3s ease;
+    }
+
+    #searchButton:hover {
+        background-color: #45a049;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .actions button {
+        padding: 8px 16px;
+        margin-right: 8px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .actions button.mark_p {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    .actions button.mark_p:hover {
+        background-color: #45a049;
+    }
+
+    .actions button.delete {
+        background-color: #f44336;
+        color: white;
+    }
+
+    .actions button.delete:hover {
+        background-color: #da190b;
+    }
+
+    .actions button.view {
+        background-color: #2196F3;
+        color: white;
+    }
+
+    .actions button.view:hover {
+        background-color: #0b7dda;
+    }
+</style>
+    <div class="container">
+        <div class="header">
+            <h2>My Invoices</h2>
+            <div class="search-bar">
+                <input type="text" id="searchInput" name="searchInput" placeholder="Search by Invoice number...">
+                <button id="searchButton" name="searchButton"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+        <table id="invoiceTable">
+            <thead>
+                <tr>
+                    <th>S. No</th>
+                    <th>Invoice Number</th>
+                    <th>Company Name</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in invoice_data %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ i.invoice_number }}</td>
+                    <td>{{ i.company_name }}</td>
+                    {% if i.paid %}
+                    <td>Paid</td>
+                    <td>{{ i.date }}</td>
+                    <td class="actions">
+                        <button class="mark_d">Mark as Due</button>
+                        <button class="delete">Delete</button>
+                        <button class="view">View</button>
+                    </td>
+                    {% else %}
+                    <td>Due</td>
+                    <td>{{ i.date }}</td>
+                    <td class="actions">
+                        <button class="mark_p">Mark as Paid</button>
+                        <button class="delete">Delete</button>
+                        <button class="view">View</button>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const searchButton = document.getElementById('searchButton');
+        const tableRows = document.querySelectorAll('#invoiceTable tbody tr');
+
+            // Function to filter table rows based on search input
+            function filterRows() {
+                const searchText = searchInput.value.toLowerCase();
+                tableRows.forEach(row => {
+                    const invoiceNumber = row.children[1].textContent.toLowerCase();
+                    if (invoiceNumber.includes(searchText)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            }
+            
+            searchInput.addEventListener('input', filterRows)
+    </script>
+{%endblock%}

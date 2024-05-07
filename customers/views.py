@@ -13,22 +13,13 @@ def is_unique(field_name, value):
 
 
 def customer(request):
-     button_search_value = request.GET.get('searchInput', '')
-     if button_search_value !=  "":
-          customers = db_connect.where("company_name",'==',button_search_value).get()
-          cus_data = []
-          for doc in customers:
-               user_data = doc.to_dict()  # Convert Firestore document to Python dictionary
-               cus_data.append(user_data)
-     else:
-          button_search_value = ""
-          customers = db_connect.get()
-          cus_data = []
-          for doc in customers:
-               user_data = doc.to_dict()  # Convert Firestore document to Python dictionary
-               cus_data.append(user_data)
-          
-     return render(request, 'customer/customer.html',{'cus_data': cus_data, "input":button_search_value})
+     customers = db_connect.get()
+     cus_data = []
+     for doc in customers:
+          user_data = doc.to_dict()  # Convert Firestore document to Python dictionary
+          cus_data.append(user_data)
+     
+     return render(request, 'customer/customer.html',{'cus_data': cus_data})
 
 def new_customer(request):
      company_name = request.POST['company_name']

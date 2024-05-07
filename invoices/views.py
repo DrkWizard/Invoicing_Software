@@ -29,15 +29,18 @@ def invoice(request):
 def fetch_data(request):
      global data,invoice_gen
      selected_option = request.GET['option']
-     if selected_option == "default":
-          data = ["select a client"]
-     else:
+     try:
           d = db_connect_customer.where("company_name",'==',selected_option).get()
           for doc in d:
+               id = doc.id
                single = doc.to_dict()  # Convert Firestore document to Python dictionary
                o_order = single["order_number"]
-               invoice_gen = f"#OWNERautocount-ordernumber"
+               invoice_gen = f"#{id}-{o_order}"
           data = [single["person_name"],single["contact"],single["address"],single["order_number"],single["company_name"],invoice_gen]
+     except:
+          new_client_name = selected_option
+          invoice_gen = "_N789456147AA-00"
+          data = ["default","00","A","0","#NEW",invoice_gen,new_client_name]
      return JsonResponse({'data': data})
 
 def fetch_data_product(request):
@@ -53,12 +56,15 @@ def fetch_data_product(request):
 
 def generate_invoice(request):
      if request.method == 'POST' and len(data):
-          companyName = data[4]
+          if len(data) == 7:
+               companyName = data[6]
+          else:
+               companyName = data[4]
+          print(companyName)
           table_data_json = request.POST.get('table_data')
           prod_data = json.loads(table_data_json)
           total = request.POST.get('total_amount')
           bill_date = request.POST.get('billdate')
-          print(prod_data)
           invoice_data = {
                'company_name': companyName,
                'date': bill_date,
@@ -68,7 +74,6 @@ def generate_invoice(request):
                'ordered_products': [{'sno': i[1], 'product_name': i[2] ,'qty': int(i[3]) ,'unit_price': float(i[4]),'sub_total': i[5]} for i in prod_data]
           }
           for i in prod_data:
-               print(i)
                product_info = db_connect_product.where("product_name",'==',i[2]).get()
                for p in product_info:
                     p_id = p.id
@@ -82,7 +87,26 @@ def generate_invoice(request):
                c_id = c.id
                o_order = c.to_dict()["order_number"]
                c_ref = db_connect_customer.document(c_id)
-               c_ref.update({"order_number": o_order +1 })  
+               c_ref.update({"order_number": o_order +1 })
      else:
           print("ee")
      return redirect('invoices:invoice')
+
+
+def view_invoice(request):
+     button_search_value = request.GET.get('searchInput', '')
+     if button_search_value !=  "":
+          invoices = db_connect_invoice.where("invoice_number",'==',button_search_value).get()
+          invoice_data = []
+          for doc in invoices:
+               i_data = doc.to_dict()  # Convert Firestore document to Python dictionary
+               invoice_data.append(i_data)
+     else:
+          button_search_value = ""
+          invoices = db_connect_invoice.get()
+          invoice_data = []
+          for doc in invoices:
+               i_data = doc.to_dict()  # Convert Firestore document to Python dictionary
+               invoice_data.append(i_data)
+          
+     return render(request, "invoice/view_invoice.html",{'invoice_data': invoice_data})

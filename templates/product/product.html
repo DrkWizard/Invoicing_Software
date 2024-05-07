@@ -4,16 +4,9 @@
 <title>{% block title %}products{% endblock %}</title>
 <div class="container">
     <h2>My Products</h2>
-    <form action="{% url 'products:product' %}" method="GET">
         <div class="search-bar">
-            {% if input%}
-                <input type="text" id="searchInput" name="searchInput" placeholder="{{input}}">
-            {% else %}
-                <input type="text" id="searchInput" name="searchInput" placeholder="Search by product name...">
-            {% endif %}
-            <button id="searchButton" name ="searchButton"><i class="fas fa-search"></i></button>
+            <input type="text" id="searchInput" name="searchInput" placeholder="Search by product name...">
         </div>
-    </form>
     <div class="action-buttons">
         <div class="add-customer-btn">
             <button class="new-customer-button" onclick="openModal()">Add New Product</button>
@@ -69,11 +62,7 @@
 </div>
 
 <style>
-    body {
-        margin: 0;
-        padding: 0;
-        font-family: Arial, sans-serif;
-    }
+
     .container {
         max-width: 2000px;
         margin: 20px auto;
@@ -309,6 +298,20 @@ window.onclick = function(event) {
         modal.style.display = "none";
     }
 }
+const searchInput = document.getElementById('searchInput');
+const productCards = document.querySelectorAll('.flip-card-front');
+function filter() {
+    const searchText = searchInput.value.toLowerCase();
+    productCards.forEach(card => {
+        const productName = card.textContent.toLowerCase()
+        if (productName.includes(searchText)) {
+            card.style.display = '';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
 
+searchInput.addEventListener('input', filter);
 </script>
 {% endblock %}

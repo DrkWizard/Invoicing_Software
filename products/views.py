@@ -11,20 +11,12 @@ def is_unique(field_name, value):
      return len(docs) == 0
 
 def product(request):
-     button_search_value = request.GET.get('searchInput', '')
-     if button_search_value !=  "":
-          products = db_connect.where("product_name",'==',button_search_value).get()
-          pro_data = []
-          for doc in products:
-               prod_data = doc.to_dict()  # Convert Firestore document to Python dictionary
-               pro_data.append(prod_data)
-     else:
-          products = db_connect.get()
-          pro_data = []
-          for doc in products:
-               prod_data = doc.to_dict()  # Convert Firestore document to Python dictionary
-               pro_data.append(prod_data)
-     return render(request, 'product/product.html',{'pro_data': pro_data, "input":button_search_value})
+     products = db_connect.get()
+     pro_data = []
+     for doc in products:
+          prod_data = doc.to_dict()  # Convert Firestore document to Python dictionary
+          pro_data.append(prod_data)
+     return render(request, 'product/product.html',{'pro_data': pro_data})
 
 def new_product(request):
      print("hello")
