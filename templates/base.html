@@ -53,9 +53,10 @@
         <ul>
             <li><a href="{% url 'dashboard:dashboard' %}"><i class="fas fa-chart-line"></i> Dashboard</a></li>
             <li><a href="{% url 'invoices:invoice' %}"><i class="fas fa-file-invoice-dollar"></i> New Invoice</a></li>
+            <li><a href="{% url 'invoices:view_invoice' %}"><i class="fas fa-eye"></i> View Invoices</a></li>
             <li><a href="{% url 'customers:customer' %}"><i class="fas fa-users"></i> Clients</a></li>
             <li><a href="{% url 'products:product' %}"><i class="fas fa-box-open"></i> Products</a></li>
-            <li><a href="#"><i class="fas fa-chart-bar"></i> Reports</a></li>
+            <!---<li><a href="#"><i class="fas fa-chart-bar"></i> Reports</a></li>--->
             <li><a href="{% url 'settings:setting' %}"><i class="fas fa-cog"></i> Settings</a></li>
         </ul>
     </div>

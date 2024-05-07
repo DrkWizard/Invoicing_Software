@@ -71,7 +71,7 @@
         background-color: #f2f2f2;
     }
 
-    .actions button {
+    button {
         padding: 8px 16px;
         margin-right: 8px;
         border: none;
@@ -80,30 +80,39 @@
         transition: background-color 0.3s ease;
     }
 
-    .actions button.mark_p {
+    button.mark_p {
         background-color: #4CAF50;
         color: white;
     }
 
-    .actions button.mark_p:hover {
+    button.mark_p:hover {
         background-color: #45a049;
     }
+    button.mark_d {
+        background-color: #FFD700;
+        color: white;
+    }
 
-    .actions button.delete {
+    button.mark_d:hover {
+        background-color: #FDFD96;
+        color:black;
+    }
+
+    button.delete {
         background-color: #f44336;
         color: white;
     }
 
-    .actions button.delete:hover {
+    button.delete:hover {
         background-color: #da190b;
     }
 
-    .actions button.view {
+    button.view {
         background-color: #2196F3;
         color: white;
     }
 
-    .actions button.view:hover {
+    button.view:hover {
         background-color: #0b7dda;
     }
 </style>
@@ -112,17 +121,16 @@
             <h2>My Invoices</h2>
             <div class="search-bar">
                 <input type="text" id="searchInput" name="searchInput" placeholder="Search by Invoice number...">
-                <button id="searchButton" name="searchButton"><i class="fas fa-search"></i></button>
             </div>
         </div>
         <table id="invoiceTable">
             <thead>
                 <tr>
                     <th>S. No</th>
+                    <th>Date</th>
                     <th>Invoice Number</th>
                     <th>Company Name</th>
                     <th>Status</th>
-                    <th>Date</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -130,23 +138,28 @@
                 {% for i in invoice_data %}
                 <tr>
                     <td>{{ forloop.counter }}</td>
+                    <td>{{ i.date }}</td>
                     <td>{{ i.invoice_number }}</td>
                     <td>{{ i.company_name }}</td>
                     {% if i.paid %}
-                    <td>Paid</td>
-                    <td>{{ i.date }}</td>
+                    
+                    <form action="" method="post">
+                        {% csrf_token %}
+                    <td><button name="mark" value="{{i.invoice_number}}" class="mark_p">Paid</button></td>
                     <td class="actions">
-                        <button class="mark_d">Mark as Due</button>
-                        <button class="delete">Delete</button>
-                        <button class="view">View</button>
+                            
+                        <button name ="delete" value="{{i.invoice_number}}"class="delete">Delete</button>
+                        <button name ="view" value="{{i.invoice_number}}" class="view">View</button>
+                        </form>
                     </td>
                     {% else %}
-                    <td>Due</td>
-                    <td>{{ i.date }}</td>
+                    <form action="" method="post">
+                    {% csrf_token %}
+                    <td> <button name="mark" value="{{i.invoice_number}}" class="mark_d">Due</button></td>
                     <td class="actions">
-                        <button class="mark_p">Mark as Paid</button>
-                        <button class="delete">Delete</button>
-                        <button class="view">View</button>
+                            <button name ="delete" value="{{i.invoice_number}}"class="delete">Delete</button>
+                            <button name ="view" value="{{i.invoice_number}}"  target="_blank" class="view">View</button>
+                            </form>
                     </td>
                     {% endif %}
                 </tr>
@@ -173,5 +186,6 @@
             }
             
             searchInput.addEventListener('input', filterRows)
+
     </script>
 {%endblock%}

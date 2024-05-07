@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from firebase_admin import firestore
 from datetime import date
 from django.http import JsonResponse
-import json
+import json, re
 
 db = firestore.client()
 db_connect_customer = db.collection('customer')
@@ -90,23 +90,36 @@ def generate_invoice(request):
                c_ref.update({"order_number": o_order +1 })
      else:
           print("ee")
-     return redirect('invoices:invoice')
+     return redirect('invoices:view_invoice')
 
 
 def view_invoice(request):
-     button_search_value = request.GET.get('searchInput', '')
-     if button_search_value !=  "":
-          invoices = db_connect_invoice.where("invoice_number",'==',button_search_value).get()
-          invoice_data = []
-          for doc in invoices:
-               i_data = doc.to_dict()  # Convert Firestore document to Python dictionary
-               invoice_data.append(i_data)
-     else:
-          button_search_value = ""
-          invoices = db_connect_invoice.get()
-          invoice_data = []
-          for doc in invoices:
-               i_data = doc.to_dict()  # Convert Firestore document to Python dictionary
-               invoice_data.append(i_data)
-          
+     invoices = db_connect_invoice.get()
+     invoice_data = []
+     for doc in invoices:
+          i_data = doc.to_dict()  # Convert Firestore document to Python dictionary
+          invoice_data.append(i_data)
+     if request.method=="POST":
+          button_mark_value = request.POST.get('mark')
+          button_delete_value = request.POST.get('delete')
+          button_view_value = request.POST.get('view')
+          if(button_mark_value):
+               req_i = db_connect_invoice.where("invoice_number","==",button_mark_value).get()
+               for r in req_i:
+                    r_id = r.id
+                    i_ref = i_ref = db_connect_invoice.document(r_id)
+                    i_ref_d = i_ref.get().to_dict()
+                    if i_ref_d["paid"]:
+                         i_ref.update({"paid": False })
+                    else:
+                         i_ref.update({"paid": True })
+               return redirect('invoices:view_invoice')
+          elif(button_view_value):
+               req_i = db_connect_invoice.where("invoice_number","==",button_view_value).get()
+               for r in req_i:
+                    ri_doc = r.to_dict()
+               matches = re.search(r'#(.*?)-', button_view_value)
+               c_ref = db_connect_customer.document(matches.group(1)).get().to_dict()
+               return render(request, "invoice/template.html",{"r_data": ri_doc,"c_data":c_ref})
+               
      return render(request, "invoice/view_invoice.html",{'invoice_data': invoice_data})

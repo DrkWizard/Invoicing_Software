@@ -9,11 +9,7 @@
             <h3>Total Revenue</h3>
             <p>₹{{total_revenue}}</p>
         </div>
-        <div class="summary-card">
-            <h3>Total Orders</h3>
-            <p>{{invoice_count}} <a href="{% url 'invoices:view_invoice' %}">view invoices</a></p>
-            
-        </div>
+
         <div class="summary-card">
             <h3>Total Clients</h3>
             <p>{{customer_count}}</p>
@@ -25,12 +21,17 @@
     </div>
     <div class="summary-cards">
         <div class="summary-card">
-            <h3></h3>
-            <p></p>
+            <h3>Total Orders</h3>
+            <p>{{invoice_count}} <a href="{% url 'invoices:view_invoice' %}">view invoices</a></p>
+            
         </div>
         <div class="summary-card">
-            <h3></h3>
-            <p></p>
+            <h3>Number of Cleared Bills</h3>
+            <p>{{paid}}</p>
+        </div>
+        <div class="summary-card">
+            <h3>Number of Due bills</h3>
+            <p>{{due}}</p>
         </div>
     </div>
     {{ no_products|safe }}
