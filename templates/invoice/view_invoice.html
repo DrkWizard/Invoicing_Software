@@ -115,12 +115,23 @@
     button.view:hover {
         background-color: #0b7dda;
     }
+    button.new {
+        background-color: green;
+        color: white;
+        margin-left: 5px;
+    }
+
+    button.new:hover {
+        background-color: #45a049;
+    }
 </style>
     <div class="container">
         <div class="header">
             <h2>My Invoices</h2>
+            <button id="new" name="new" class="new" onclick="new_inv()">New</button>
+
             <div class="search-bar">
-                <input type="text" id="searchInput" name="searchInput" placeholder="Search by Invoice number...">
+                <input type="text" id="searchInput" name="searchInput" placeholder="Search by Invoice number..." autocomplete="off">
             </div>
         </div>
         <table id="invoiceTable">
@@ -176,7 +187,7 @@
             function filterRows() {
                 const searchText = searchInput.value.toLowerCase();
                 tableRows.forEach(row => {
-                    const invoiceNumber = row.children[1].textContent.toLowerCase();
+                    const invoiceNumber = row.children[2].textContent.toLowerCase();
                     if (invoiceNumber.includes(searchText)) {
                         row.style.display = '';
                     } else {
@@ -187,5 +198,8 @@
             
             searchInput.addEventListener('input', filterRows)
 
+            function new_inv(){
+                window.location.href = "{% url 'invoices:invoice'%}"
+            }
     </script>
 {%endblock%}
