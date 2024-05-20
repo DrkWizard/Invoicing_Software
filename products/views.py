@@ -4,7 +4,6 @@ from firebase_admin import firestore
 db = firestore.client()
 db_connect = db.collection('product')
 
-print("hello")
 def is_unique(field_name, value):
      query = db_connect.where(field_name, '==', value)
      docs = query.get()

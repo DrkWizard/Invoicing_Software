@@ -10,6 +10,12 @@ db_connect_product = db.collection('product')
 db_connect_invoice = db.collection('invoice')
 data = []
 
+
+def is_unique(field_name, value):
+     query = db_connect_customer.where(field_name, '==', value)
+     docs = query.get()
+     return len(docs) == 0
+
 def invoice(request):
      global data
      data = []
@@ -36,7 +42,7 @@ def fetch_data(request):
                single = doc.to_dict()  # Convert Firestore document to Python dictionary
                o_order = single["order_number"]
                invoice_gen = f"#{id}-{o_order}"
-          data = [single["person_name"],single["contact"],single["address"],single["order_number"],single["company_name"],invoice_gen]
+          data = [single["person_name"],single["contact"],single["address"],single["order_number"],single["company_name"],invoice_gen,single["country"],single["state"],single["zip_code"]]
      except:
           new_client_name = selected_option
           invoice_gen = "_N789456147AA-00"
@@ -56,11 +62,30 @@ def fetch_data_product(request):
 
 def generate_invoice(request):
      if request.method == 'POST' and len(data):
-          if len(data) == 7:
+          if len(data) == 10:
                companyName = data[6]
           else:
                companyName = data[4]
-          print(companyName)
+          if is_unique('company_name', companyName):
+               n_c = {
+                    'company_name': companyName,
+                    'person_name': "",
+                    'contact': "",
+                    'email': "",
+                    'address': "",
+                    'city': "",
+                    'state': "",
+                    'country': "",
+                    'zip_code': "",
+                    'order_number':0,
+               }
+               db_connect_customer.add(n_c)
+          global invoice_gen
+          if invoice_gen == "_N789456147AA-00":
+               d = db_connect_customer.where("company_name",'==',companyName).get()
+               for doc in d:
+                    id = doc.id
+                    invoice_gen = f"#{id}-0"
           table_data_json = request.POST.get('table_data')
           prod_data = json.loads(table_data_json)
           total = request.POST.get('total_amount')

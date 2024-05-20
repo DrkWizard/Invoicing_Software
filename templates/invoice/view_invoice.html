@@ -159,7 +159,7 @@
                     <td><button name="mark" value="{{i.invoice_number}}" class="mark_p">Paid</button></td>
                     <td class="actions">
                             
-                        <button name ="delete" value="{{i.invoice_number}}"class="delete">Delete</button>
+                        <button name ="delete" id="delete" value="{{i.invoice_number}}" class="delete">Delete</button>
                         <button name ="view" value="{{i.invoice_number}}" class="view">View</button>
                         </form>
                     </td>
@@ -168,8 +168,8 @@
                     {% csrf_token %}
                     <td> <button name="mark" value="{{i.invoice_number}}" class="mark_d">Due</button></td>
                     <td class="actions">
-                            <button name ="delete" value="{{i.invoice_number}}"class="delete">Delete</button>
-                            <button name ="view" value="{{i.invoice_number}}"  target="_blank" class="view">View</button>
+                            <button name ="delete" id="delete" value="{{i.invoice_number}}" class="delete">Delete</button>
+                            <button name ="view" value="{{i.invoice_number}}" class="view">View</button>
                             </form>
                     </td>
                     {% endif %}
@@ -201,5 +201,6 @@
             function new_inv(){
                 window.location.href = "{% url 'invoices:invoice'%}"
             }
+
     </script>
 {%endblock%}

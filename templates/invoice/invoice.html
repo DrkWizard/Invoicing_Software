@@ -241,16 +241,16 @@
                 data_arr.push(item)
                 });
                 if(data_arr[4]!="#NEW"){
-                    paragraphs[0].textContent = data_arr[0]
-                    paragraphs[1].textContent = data_arr[1]
-                    paragraphs[2].textContent = data_arr[2]
+                    paragraphs[0].textContent = data_arr[2]
+                    paragraphs[1].textContent = data_arr[7] + "-" + data_arr[8]
+                    paragraphs[2].textContent = data_arr[6]
                     document.getElementById("order-number").textContent= data_arr[3] + 1;
                     document.getElementById("invoice_n").textContent= data_arr[5];
                 }
                 else{   
-                    paragraphs[0].innerHTML =  '<input type="text" placeholder="Enter Person Name">';
-                    paragraphs[1].innerHTML = '<input type="text" placeholder="Enter Contact">'
-                    paragraphs[2].innerHTML = '<input type="text" placeholder="Enter Address">'
+                    paragraphs[0].innerHTML =  '<input type="text" placeholder="Enter Address">';
+                    paragraphs[1].innerHTML = '<input type="text" placeholder="Enter state">' +"-"+ '<input type="text" placeholder="Enter zip-code">'
+                    paragraphs[2].innerHTML = '<input type="text" placeholder="Country">'
                     document.getElementById("order-number").textContent= "1";
                     document.getElementById("invoice_n").textContent= data_arr[5];
                 }
