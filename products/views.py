@@ -8,7 +8,9 @@ def is_unique(field_name, value):
      query = db_connect.where(field_name, '==', value)
      docs = query.get()
      return len(docs) == 0
+print("JIII")
 
+print("kidfndakjhd")
 def product(request):
      products = db_connect.get()
      pro_data = []
